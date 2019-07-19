@@ -1,24 +1,46 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ul>
+      <li v-for="(good, i) in goods" :key="good.id">
+        {{good.name}}￥{{good.price}}
+        <button @click="addGood(i)">加购物车</button>
+      </li>
+    </ul>
+    <cart></cart>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import cart from "./components/cart/cart.vue";
+import axios from "axios";
 export default {
-  name: 'app',
+  name: "app",
+  data() {
+    return {
+      goods: []
+    };
+  },
+  async created() {
+    try {
+      const response = await axios.get("/api/goods");
+      this.goods = response.data.list;
+    } catch (error) {}
+  },
   components: {
-    HelloWorld
+    cart: cart
+  },
+  methods: {
+    addGood(i) {
+      const good = this.goods[i];
+      this.$bus.$emit("addCart", good);
+    }
   }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
