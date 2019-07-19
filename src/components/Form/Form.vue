@@ -5,7 +5,10 @@
 </template>
 
 <script>
+
 export default {
+  componentName: 'ZForm',
+  
   provide() {
     // 将表单实例传递给后代
     return {
@@ -23,7 +26,7 @@ export default {
   },
   created() {
     this.fields = [];
-    this.$on("formItemAdd", item => this.fields.push(item));
+    this.$on("k.form.formItemAdd", item => this.fields.push(item));
   },
   methods: {
     async validate(callback) { // 在formtest中调用

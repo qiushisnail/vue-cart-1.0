@@ -9,8 +9,11 @@
 </template>
 
 <script>
+import emitter from "../../mixins/emitter";
 import schema from "async-validator"; // 校验
 export default {
+  componentName: 'ZFormItem',
+  mixins: [emitter],
   inject: ["form"], //注入form，获得model和rules
   props: ["label", "prop"],
   data() {
@@ -20,17 +23,18 @@ export default {
     };
   },
   created() {
-    this.$on("validate", this.validate);
+    //this.$on("validate", this.validate);
+     this.$on('k.form.validate',this.validate);
   },
   mounted() {
     //挂载到form上时，派发一个添加事件
     if (this.prop) {
-      this.$parent.$emit("formItemAdd", this);
+      this.dispatch('ZForm','k.form.formItemAdd', this)
+      //this.$parent.$emit("formItemAdd", this);
     }
   },
   methods: {
     validate(value) {
-      console.log(value)
       return new Promise(resolve => {
          // 校验规则
         const desc = { [this.prop]: this.form.rules[this.prop] }; // es6计算属性

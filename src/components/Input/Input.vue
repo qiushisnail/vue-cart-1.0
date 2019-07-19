@@ -3,7 +3,10 @@
 </template>
 
 <script>
+import emitter from "../../mixins/emitter";
 export default {
+  mixins: [emitter],
+
   props: {
     value: {
       type: String,
@@ -27,7 +30,8 @@ export default {
 
       // 通知FormItem做校验
       // 自己传自己 this.$parent 就是FormItem
-      this.$parent.$emit("validate", this.inputValue);
+      //this.$parent.$emit("validate", this.inputValue);
+      this.dispatch("ZFormItem", "k.form.validate", [this.inputValue]);
     }
   }
 };
