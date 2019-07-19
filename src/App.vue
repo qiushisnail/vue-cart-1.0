@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <form-test></form-test>
     <ul>
       <li v-for="(good, i) in goods" :key="good.id">
         {{good.name}}￥{{good.price}}
@@ -12,7 +13,9 @@
 
 <script>
 import cart from "./components/cart/cart.vue";
+import FormTest from './components/FormTest/FormTest.vue';
 import axios from "axios";
+
 export default {
   name: "app",
   data() {
@@ -24,10 +27,13 @@ export default {
     try {
       const response = await axios.get("/api/goods");
       this.goods = response.data.list;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   },
   components: {
-    cart: cart
+    cart,
+    FormTest
   },
   methods: {
     addGood(i) {
